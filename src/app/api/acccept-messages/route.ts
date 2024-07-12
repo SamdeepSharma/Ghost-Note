@@ -30,6 +30,8 @@ export async function POST(request: Request) {
                     }, { status: 401 }
                )
           }
+          updatedUser.isAcceptingMessages = !(updatedUser.isAcceptingMessages)
+          await updatedUser.save()
           return Response.json(
                {
                     success: true,
