@@ -6,15 +6,14 @@ interface RootLayoutProps {
 }
 
 export const metadata: Metadata = {
-  title: "Ghost Note",
-  description: "Get along on a mystery adventure.",
+  title: "Ghost Note - Ghost area 51",
+  description: "Welcome to the mystery adventure. Share your unique link with others.",
 };
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
+    <>
       {children}
-    </div>
+    </>
   );
 }

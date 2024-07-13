@@ -20,7 +20,7 @@ export default function Home() {
             Dive into the World of Anonymous Feedback
           </h1>
           <p className="mt-3 md:mt-4 text-base md:text-lg">
-            Insight Sphere - Where your identity remains a secret.
+            Ghost Note - Where your identity remains a secret.
           </p>
         </section>
         <Carousel plugins={[Autoplay({ delay: 2500 })]} className="w-full max-w-xs">
@@ -52,7 +52,7 @@ export default function Home() {
       </main>
 
       <footer className="text-center p-4 md:p-6 bg-black text-white">
-        Copyright © 2024 Insight-Sphere | All rights reserved.
+        Copyright © 2024 Ghost-Note | All rights reserved.
       </footer>
     </>
   );

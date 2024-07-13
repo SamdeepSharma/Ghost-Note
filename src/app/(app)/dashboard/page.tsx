@@ -24,6 +24,7 @@ const Dashboard = () => {
 
      const handleDeleteMessage = (messageId: string) => {
           messages.filter((message) => message._id !== messageId)
+          fetchMessages(true);
      }
 
      const { data: session } = useSession()
