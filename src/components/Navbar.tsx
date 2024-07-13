@@ -4,7 +4,7 @@ import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { User } from 'next-auth'
 import { Button } from './ui/button'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 const Navbar = () => {
   const { data: session } = useSession()
@@ -12,7 +12,7 @@ const Navbar = () => {
   const router = useRouter()
 
   return (
-    <div className='mx-auto flex flex-col md:flex-row justify-between items-center shadow-md py-4 px-8 md:py-6 md:px-24'>
+    <div className='flex flex-col md:flex-row justify-between items-center shadow-md py-4 px-8 md:py-6 md:px-24'>
       <Link className='text-xl font-bold mb-4 md:mb-0' href={"/"}>Insight Sphere</Link>
       {
         session ?

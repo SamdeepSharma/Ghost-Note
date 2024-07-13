@@ -28,7 +28,7 @@ import { ApiResponse } from '@/types/ApiResponse'
 
 type MessageCardProps = {
      message: Message;
-     onMessageDelete: (messageId: string) => void;
+     onMessageDelete: (messageId: any) => void;
 }
 
 export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
@@ -42,7 +42,7 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
       toast({
         title: response.data.message,
       });
-      onMessageDelete(message.id);   //to be fixed later
+      onMessageDelete(message._id);
 
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -56,12 +56,12 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
   };
      return (
           <Card>
-               <div className='flex justify-center items-center"'>
+               <div className='flex-col justify-center items-center"'>
                     <CardHeader>
-                         <CardTitle>New message</CardTitle>
+                         <CardTitle>{message.content}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                         <CardDescription>{message.content}</CardDescription>
+                         <CardDescription>Sent on {dayjs(message.createdAt).format('MMM D, YYYY')}</CardDescription>
                     </CardContent>
                     <CardFooter>
                          <AlertDialog>
@@ -84,9 +84,9 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
                          </AlertDialog>
                     </CardFooter>
                </div>
-               <div className="text-sm">
+               {/* <div className="text-sm">
                     Sent on {dayjs(message.createdAt).format('MMM D, YYYY h:mm A')}
-               </div>
+               </div> */}
           </Card>
      )
 }
