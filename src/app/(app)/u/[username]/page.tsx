@@ -19,7 +19,6 @@ const UserPage = () => {
           const check = async () => {
                try {
                     const response = await axios.get<ApiResponse>(`/api/send-message?username=${params.username}`)
-                    console.log(response)
                     if (!response) {
                          toast({
                               title: 'Error',
@@ -49,7 +48,6 @@ const UserPage = () => {
 
                } catch (error) {
                     const axiosError = error as AxiosError<ApiResponse>
-                    console.log(axiosError)
                     if (axiosError.response?.status == 404) {
                          toast({
                               title: "User not found!",
