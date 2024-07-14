@@ -7,12 +7,13 @@ export async function sendVerificationEmail(
      username: string,
      verifyCode: string
 ): Promise<ApiResponse> {
+     const newUsername = username.toLowerCase()
      try {
           await resend.emails.send({
                from: 'onboarding@resend.dev',
                to: email,
                subject: 'InsightSphere | Verification Code',
-               react: VerificationEmail({ username, otp: verifyCode })
+               react: VerificationEmail({ newUsername, otp: verifyCode })
           });        
           return { success: true, message: "Verification email sent successfully." }
 

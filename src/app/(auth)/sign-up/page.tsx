@@ -14,7 +14,7 @@ import { ApiResponse } from "@/types/ApiResponse"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import { CaseLower, Loader2 } from "lucide-react"
 
 const page = () => {
      const [username, setUsername] = useState('')
@@ -98,6 +98,7 @@ const page = () => {
                                                   <Input placeholder="username" {...field} onChange={(e) => {
                                                        field.onChange(e)
                                                        debounced(e.target.value)
+                                                       CaseLower
                                                   }} />
                                              </FormControl>
                                              {isCheckingUsername && <Loader2 className="animate-spin" />}

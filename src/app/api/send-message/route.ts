@@ -6,8 +6,9 @@ export async function POST(request: Request) {
      await dbConnect()
 
      const { username, content } = await request.json()
+     const newUsername = username.toLowerCase()
      try {
-          const foundUser = await UserModel.findOne({ username })
+          const foundUser = await UserModel.findOne({ username: newUsername })
           if (!foundUser) {
                return Response.json(
                     {
@@ -69,7 +70,8 @@ export async function GET(request: Request) {
           }
 
           const username = queryParam.username
-          const user = await UserModel.findOne({ username: username })
+          const newUsername = username.toLowerCase()
+          const user = await UserModel.findOne({ username: newUsername })
           if (!user) {
                return Response.json(
                     {
