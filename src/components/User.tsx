@@ -23,45 +23,59 @@ import Link from 'next/link'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader } from './ui/card'
 import { Separator } from '@radix-ui/react-separator'
+import { useCompletion } from 'ai/react';
 
 const User = () => {
-  const [value, setValue] = useState('')
   const [response, setResponse] = useState<string[]>([])
-  const [isFetching, setIsFetching] = useState(false)
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
   });
   const { toast } = useToast()
   const params = useParams<{ username: string }>()
 
+  const initialMessageString =
+    "What's your favorite movie?||Do you have any pets?||What's your dream job?";
+
+  const {
+    complete,
+    completion,
+    isLoading,
+    error,
+  } = useCompletion({
+    api: '/api/suggest-messages',
+    initialCompletion: initialMessageString,
+  });
+
+
   const fetchMessages = useCallback(async (refresh: boolean = false) => {
-    setIsFetching(true)
     try {
-      const result = await axios.get('/api/suggest-messages')
-      if (!result) {
+      await complete('');
+      if (error) {
+        const suggestions = initialMessageString.split('||')
+        setResponse(suggestions)
         toast({
-          title: 'Error',
-          description: 'Unable to fetch suggested-messages',
+          title: 'Unable to fetch suggestions',
+          description: error.message,
           variant: 'destructive'
         })
       }
-      const suggestions = result.data.suggestions.split('||')
-      suggestions.map((suggestion: string) => {
-        const suggest = suggestion.trim()
-        setResponse([...response, suggest])
-        console.log(suggest)
+      const suggestions = completion.split('||')
+      
+      setResponse(suggestions)
+      toast({
+        title: 'Showing new suggestions',
+        description: 'Suggestions updated successfully.',
       })
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
+      console.log(axiosError)
       toast({
         title: 'Error',
         description: axiosError.response?.data.message ?? 'Unable to fetch suggested-messages',
         variant: 'destructive'
       })
-    } finally {
-      setIsFetching(false)
     }
-  }, [setResponse, setIsFetching])
+  }, [setResponse])
 
   useEffect(() => {
     fetchMessages(true)
@@ -96,6 +110,10 @@ const User = () => {
       })
     }
   }
+
+  const parseStringMessages = (messageString: string): string[] => {
+    return messageString.split('||');
+  };
 
   return (
     <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
@@ -141,15 +159,16 @@ const User = () => {
           <Button
             onClick={(e) => {
               e.preventDefault();
-              fetchMessages(true);}}
+              fetchMessages(true);
+            }}
             className="my-4"
-            disabled={isFetching}
+            disabled={isLoading}
           >
             {
-              isFetching? 
-              <><Loader2 className="h-4 w-4 mr-2"/>Suggesting...</>
-              :
-              <><span>Suggest Messages</span></>
+              isLoading ?
+                <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Suggesting...</>
+                :
+                <><span>Suggest Messages</span></>
             }
           </Button>
           <p>Click on any message below to select it.</p>
@@ -159,20 +178,18 @@ const User = () => {
             <h3 className="text-xl font-semibold">Messages</h3>
           </CardHeader>
           <CardContent className="flex flex-col space-y-4">
-            { !response ? (
+            {!response ? (
               <p >No suggestions available, please refresh.</p>
-            ) : (
-              response.map((message, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  className="mb-2"
-                  onClick={() => handleMessageClick(message)}
-                >
-                  {message}
-                </Button>
-              ))
-            )}
+            ) : parseStringMessages(completion).map((message, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                className="mb-2"
+                onClick={() => handleMessageClick(message)}
+              >
+                {message}
+              </Button>
+            ))}
           </CardContent>
         </Card>
       </div>
