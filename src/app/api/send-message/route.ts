@@ -47,3 +47,63 @@ export async function POST(request: Request) {
           )
      }
 }
+
+export async function GET(request: Request) {
+     await dbConnect()
+
+     try {
+          const {searchParams} = new URL(request.url)
+          const queryParam = {
+               username: searchParams.get('username')
+          }
+          if(!queryParam.username){
+               return Response.json(
+                    {
+                         success: false,
+                         message: "Invalid username"
+                    },
+                    {
+                         status: 400
+                    }
+               )
+          }
+
+          const username = queryParam.username
+          const user = await UserModel.findOne({ username: username })
+          if (!user) {
+               return Response.json(
+                    {
+                         success: false,
+                         message: "User not found"
+                    }, { status: 404 }
+               )
+          }
+
+          const status = user.isAcceptingMessages
+          if (status) {
+               return Response.json(
+                    {
+                         success: true,
+                         message: 'User is accepting messages'
+                    }, { status: 200 }
+               )
+          }
+          else {
+               return Response.json(
+                    {
+                         success: true,
+                         message: 'User is not accepting messages'
+                    }, { status: 200 }
+               )
+          }
+
+     } catch (error) {
+          console.log('Error fetching status', error)
+          return Response.json(
+               {
+                    status: false,
+                    message: "Error fetching status"
+               }, { status: 500 }
+          )
+     }
+}
