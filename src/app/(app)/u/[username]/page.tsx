@@ -3,7 +3,7 @@
 import Not from '@/components/Not'
 import User from '@/components/User'
 import axios, { AxiosError } from 'axios'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import NotFound from '@/components/NotFound'
 import { useToast } from '@/components/ui/use-toast'
@@ -12,7 +12,6 @@ import { LoaderPinwheel } from 'lucide-react'
 
 const UserPage = () => {
      const params = useParams<{ username: string }>()
-     const router = useRouter()
      const { toast } = useToast()
      const [userStatus, setUserStatus] = useState<'accepting' | 'notAccepting' | 'notFound' | 'error' | null>(null)
 
@@ -78,8 +77,8 @@ const UserPage = () => {
      } else if (userStatus === 'error') {
           return <div>Error checking user status</div>
      } else {
-          return <div className='bg-stone-200 h-screen w-full flex flex-col justify-center items-center'>
-               <h1 className='mb-6 text-5xl font-bold animate-ping'>Ghost Note</h1>
+          return <div className='bg-stone-200 h-[89vh] w-full flex flex-col justify-center items-center'>
+               <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
                <LoaderPinwheel className='h-12 w-12 animate-spin' />
           </div>
      }
