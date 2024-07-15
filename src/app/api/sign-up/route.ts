@@ -2,18 +2,16 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import bcrypt from "bcryptjs"
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
-
 export async function POST(request: Request){
      await dbConnect()
 
      try {
           const {username, email, password} = await request.json()
-          const newUsername = username.toLowerCase()
           const existingUserVerifiedByUsername = await UserModel.findOne({
-               username: newUsername,
+               username,
                isVerified: true
           })
-          
+
 
           if(existingUserVerifiedByUsername){
                return Response.json(
@@ -26,7 +24,6 @@ export async function POST(request: Request){
                     }
                )
           }
-
           const existingUserByEmail = await UserModel.findOne({email})
           const verifyCode = Math.floor(100000 + Math.random() * 900000).toString()
           if(existingUserByEmail){
@@ -55,7 +52,7 @@ export async function POST(request: Request){
                expiryDate.setHours(expiryDate.getHours() + 1)
 
                const newUser = new UserModel({
-                    username: newUsername,
+                    username,
                     email,
                     password: hashedPassword,
                     verifyCode,
@@ -69,7 +66,7 @@ export async function POST(request: Request){
 
           const emailResponse = await sendVerificationEmail(
                email,
-               newUsername,
+               username,
                verifyCode
           )
 
@@ -84,7 +81,6 @@ export async function POST(request: Request){
                     }
                )
           }
-
           return Response.json(
                {
                     success: true,
@@ -94,7 +90,6 @@ export async function POST(request: Request){
                     status: 201
                }
           )
-
      } catch (error) {
           console.log("Error regestering user", error)
           return Response.json(

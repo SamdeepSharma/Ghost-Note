@@ -13,7 +13,7 @@ import { User } from 'next-auth'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
-import { Loader2, RefreshCcw } from 'lucide-react'
+import { Loader2, LoaderPinwheel, RefreshCcw } from 'lucide-react'
 import MessageCard from '@/components/MessageCard'
 import Link from 'next/link'
 
@@ -78,7 +78,6 @@ const Dashboard = () => {
      }, [setIsLoading, setMessages])
 
      useEffect(() => {
-          if (!session || !session.user) return;
           fetchMessages()
           fetchAcceptMessage()
      }, [session, setValue, fetchMessages, fetchAcceptMessage])
@@ -103,15 +102,14 @@ const Dashboard = () => {
           }
      }
 
-     messages.map((message) => console.log(message))
-
      if (!session || !session.user) {
-          return <div className='bg-stone-200 h-[89vh] w-full flex flex-col justify-center items-center'>
-          <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
-          <p className='text-2xl'>Session Expired. Please Sign-in again.</p>
-          <Link href={'/sign-in'}><Button className='mt-4'>Sign-in</Button></Link>
-          </div>
+               return <div className='bg-stone-200 h-[89vh] w-full flex flex-col justify-center items-center'>
+                    <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
+                    <p className='text-2xl'>Session Expired. Please Sign-in again.</p>
+                    <Link href={'/sign-in'}><Button className='mt-4'>Sign-in</Button></Link>
+               </div>
      }
+
      const { username } = session?.user as User
      // if(window)
      // {const baseUrl = `${window.location.protocol}//${window.location.hostname}`

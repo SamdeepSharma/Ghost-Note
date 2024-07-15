@@ -14,17 +14,15 @@ import { ApiResponse } from "@/types/ApiResponse"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { CaseLower, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 
 const page = () => {
      const [username, setUsername] = useState('')
      const [usernameMessage, setUsernameMessage] = useState('')
      const [isCheckingUsername, setIsCheckingUsername] = useState(false)
-
      const debounced = useDebounceCallback(setUsername, 300)
      const { toast } = useToast()
      const router = useRouter()
-
      //zod implementation
      const form = useForm<z.infer<typeof signUpSchema>>({
           resolver: zodResolver(signUpSchema),
@@ -34,10 +32,7 @@ const page = () => {
                password: ''
           }
      })
-
      const { formState } = form;
-
-
      useEffect(() => {
           const checkUsernameUnique = async () => {
                if (username) {
@@ -57,7 +52,6 @@ const page = () => {
           }
           checkUsernameUnique()
      }, [username])
-
      const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
           try {
                const response = await axios.post<ApiResponse>('/api/sign-up', data)
@@ -75,10 +69,8 @@ const page = () => {
                     description: errorMessage,
                     variant: 'destructive'
                })
-
           }
      }
-
      return (
           <div className="flex justify-center items-center min-h-screen bg-gray-100">
                <div className="w-full max-w-lg p-8 space-y-8 bg-white rounded-lg shadow-md">
@@ -98,7 +90,6 @@ const page = () => {
                                                   <Input placeholder="username" {...field} onChange={(e) => {
                                                        field.onChange(e)
                                                        debounced(e.target.value)
-                                                       CaseLower
                                                   }} />
                                              </FormControl>
                                              {isCheckingUsername && <Loader2 className="animate-spin" />}
@@ -154,5 +145,4 @@ const page = () => {
           </div>
      );
 }
-
 export default page
