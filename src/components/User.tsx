@@ -34,7 +34,7 @@ const User = () => {
   const params = useParams<{ username: string }>()
 
   const initialMessageString =
-    "What's your favorite movie?||Do you have any pets?||What's your dream job?";
+    `What song always gets stuck in your head ? || If your life had a theme song, what would it be ? || What's the most unexpected place you've met someone interesting ?`
 
   const {
     complete,
@@ -49,30 +49,22 @@ const User = () => {
 
   const fetchMessages = useCallback(async (refresh: boolean = false) => {
     try {
-      await complete('');
-      if (error) {
-        const suggestions = initialMessageString.split('||')
-        setResponse(suggestions)
-        toast({
-          title: 'Unable to fetch suggestions',
-          description: error.message,
-          variant: 'destructive'
-        })
-      }
-      const suggestions = completion.split('||')
-      
+      complete('');
+      const result = await axios.post('/api/suggest-messages')
+      console.log(result.data.suggestions)
+      const suggestions = result.data.suggestions.split('||')
       setResponse(suggestions)
       toast({
         title: 'Showing new suggestions',
         description: 'Suggestions updated successfully.',
       })
     } catch (error) {
+      const suggestions = initialMessageString.split('||')
+      setResponse(suggestions)
       const axiosError = error as AxiosError<ApiResponse>;
       console.log(axiosError)
       toast({
-        title: 'Error',
-        description: axiosError.response?.data.message ?? 'Unable to fetch suggested-messages',
-        variant: 'destructive'
+        title: 'Fetched default suggested messages'
       })
     }
   }, [setResponse])
@@ -110,10 +102,6 @@ const User = () => {
       })
     }
   }
-
-  const parseStringMessages = (messageString: string): string[] => {
-    return messageString.split('||');
-  };
 
   return (
     <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
@@ -180,7 +168,7 @@ const User = () => {
           <CardContent className="flex flex-col space-y-4">
             {!response ? (
               <p >No suggestions available, please refresh.</p>
-            ) : parseStringMessages(completion).map((message, index) => (
+            ) : response.map((message, index) => (
               <Button
                 key={index}
                 variant="outline"
