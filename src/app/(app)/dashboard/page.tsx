@@ -116,7 +116,7 @@ const Dashboard = () => {
      // if(window)
      // {const baseUrl = `${window.location.protocol}//${window.location.hostname}`
      // const profileUrl = `${baseUrl}/u/${username}`}
-     const baseUrl = `${process.env.BASE_URL}`
+     const baseUrl = `${process.env.NEXT_PUBLIC_SITE_BASE_URL}`
      const profileUrl = `${baseUrl}/u/${username}`
      const copyToClipboard = () => {
           navigator.clipboard.writeText(profileUrl)
