@@ -38,9 +38,7 @@ const User = () => {
 
   const {
     complete,
-    completion,
     isLoading,
-    error,
   } = useCompletion({
     api: '/api/suggest-messages',
     initialCompletion: initialMessageString,

@@ -55,7 +55,7 @@ const Dashboard = () => {
           setIsLoading(false)
           setIsSwitchLoading(false)
           try {
-               const response = await axios.get<ApiResponse>('/api/get-messages')
+               const response = await axios.get('/api/get-messages')
                setMessages(response.data.message || [])
                if (refresh) {
                     toast({
@@ -101,6 +101,8 @@ const Dashboard = () => {
                })
           }
      }
+
+     messages.map((message) => console.log(message))
 
      if (!session || !session.user) {
           signOut()
@@ -156,7 +158,7 @@ const Dashboard = () => {
                     {messages.length > 0 ? (
                          messages.map((message: Message) => (
                               <MessageCard
-                                   key={message._id}
+                                   key={Number(message._id)}
                                    message={message}
                                    onMessageDelete={handleDeleteMessage}
                               />
