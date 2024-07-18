@@ -62,7 +62,8 @@ const User = () => {
       const axiosError = error as AxiosError<ApiResponse>;
       console.log(axiosError)
       toast({
-        title: 'Fetched default suggested messages'
+        title: 'Fetched default suggested messages',
+        description: 'Gemini free-version limit exceeded.'
       })
     }
   }, [setResponse])
@@ -170,10 +171,10 @@ const User = () => {
               <Button
                 key={index}
                 variant="outline"
-                className="mb-2"
+                className="mb-2 overflow-x-auto min-h-10"
                 onClick={() => handleMessageClick(message)}
               >
-                {message}
+              {message}
               </Button>
             ))}
           </CardContent>

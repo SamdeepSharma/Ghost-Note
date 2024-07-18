@@ -12,7 +12,7 @@ const NotFound = () => {
         <h1 className="text-5xl font-bold mt-4">Ghost User Not Found</h1>
         <p className="text-2xl mt-4 mb-6 font-normal">404</p>
         <Link href={"/"}>
-              <Button className='w-full md:w-auto p-4'>Home</Button>
+              <Button className='md:w-auto p-4'>Home</Button>
         </Link>
       </div>
     </div>

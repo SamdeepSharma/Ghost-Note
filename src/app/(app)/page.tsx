@@ -22,7 +22,7 @@ export default function Home() {
             Ghost Note - Where your identity remains a secret.
           </p>
         </section>
-        <Carousel plugins={[Autoplay({ delay: 2500 })]} className="w-full max-w-xs">
+        <Carousel plugins={[Autoplay({ delay: 2500 })]} className="w-full md:max-w-xs max-w-[250px]">
           <CarouselContent>
             {
               content.map((message, index) => (
@@ -44,13 +44,13 @@ export default function Home() {
               ))
             }
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="hidden md:block"/>
+          <CarouselNext className="hidden md:block"/>
         </Carousel>
 
       </main>
 
-      <footer className="text-center p-4 md:p-6 bg-black text-white">
+      <footer className="text-center text-xs md:text-sm p-4 md:p-6 bg-black text-white">
         Copyright © 2024 Ghost-Note | All rights reserved.
       </footer>
     </>

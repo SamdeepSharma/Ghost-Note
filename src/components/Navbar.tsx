@@ -12,13 +12,13 @@ const Navbar = () => {
   const router = useRouter()
 
   return (
-    <div className='flex flex-col md:flex-row justify-between items-center shadow-md py-4 px-8 md:py-6 md:px-24'>
-      <Link className='text-xl font-bold mb-4 md:mb-0' href={"/"}>Ghost Note</Link>
+    <div className='flex flex-row justify-between items-center shadow-md py-4 px-8 md:py-6 md:px-24'>
+      <Link className='text-xl font-bold mb-0' href={"/"}>Ghost Note</Link>
       {
         session ?
           <>
-            <span className=''>Welcome {user?.username || user?.email}</span>
-            <Button className='w-full md:w-auto' onClick={() => {
+            <span className='hidden md:block'>Welcome {user?.username || user?.email}</span>
+            <Button className='md:w-auto' onClick={() => {
               signOut()
               router.replace('/sign-in')
             }}>Sign out</Button>
@@ -26,7 +26,7 @@ const Navbar = () => {
           :
           <>
             <Link href={"/sign-in"}>
-              <Button className='w-full md:w-auto'>Sign in</Button>
+              <Button className='md:w-auto'>Sign in</Button>
             </Link></>
       }
     </div>
