@@ -9,13 +9,15 @@ import { useRouter } from "next/navigation"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
 import { signInSchema } from "@/schemas/signInSchema"
 import { signIn } from "next-auth/react"
+import { useState } from "react"
 
 const page = () => {
   const { toast } = useToast()
   const router = useRouter()
+  const [showPass, setShowPass] = useState(false)
 
   //zod implementation
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -73,7 +75,7 @@ const page = () => {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-lg p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Ghost Note</h1>
+        <Link href={"/"}><h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Ghost Note</h1></Link>
           <p className="mb-4">Sign-in to start your anonymous adventure.</p>
         </div>
         <Form {...form}>
@@ -97,9 +99,13 @@ const page = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
+                  <div className="flex justify-center items-center">
                   <FormControl>
-                    <Input type="password" placeholder="password" {...field} />
+                    <Input type={`${showPass? "text":"password"}`} placeholder="password" {...field} />
                   </FormControl>
+                    { showPass? <Button type="button" className="mx-2" onClick={()=>{setShowPass(false)}}><EyeIcon className="h-5 w-5"/></Button> 
+                    : <Button type="button" className="mx-2" onClick={()=> {setShowPass(true)}}> <EyeOffIcon className="h-5 w-5"/></Button>}
+                    </div>
                   <FormMessage />
                 </FormItem>
               )}

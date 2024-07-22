@@ -14,12 +14,13 @@ import { ApiResponse } from "@/types/ApiResponse"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
 
 const page = () => {
      const [username, setUsername] = useState('')
      const [usernameMessage, setUsernameMessage] = useState('')
      const [isCheckingUsername, setIsCheckingUsername] = useState(false)
+     const [showPass, setShowPass] = useState(false)
      const debounced = useDebounceCallback(setUsername, 300)
      const { toast } = useToast()
      const router = useRouter()
@@ -72,10 +73,10 @@ const page = () => {
           }
      }
      return (
-          <div className="flex justify-center items-center min-h-screen bg-gray-100">
+          <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
                <div className="w-full max-w-lg p-8 space-y-8 bg-white rounded-lg shadow-md">
                     <div className="text-center">
-                         <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Join Ghost Note</h1>
+                         <Link href={"/"}><h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Join Ghost Note</h1></Link>
                          <p className="mb-4">Sign-up to start your anonymous adventure.</p>
                     </div>
                     <Form {...form}>
@@ -118,9 +119,13 @@ const page = () => {
                                    render={({ field }) => (
                                         <FormItem>
                                              <FormLabel>Password</FormLabel>
-                                             <FormControl>
-                                                  <Input type="password" placeholder="password" {...field} />
-                                             </FormControl>
+                                             <div className="flex justify-center items-center">
+                                                  <FormControl>
+                                                       <Input type={`${showPass ? "text" : "password"}`} placeholder="password" {...field} />
+                                                  </FormControl>
+                                                  {showPass ? <Button type="button" className="mx-2" onClick={() => { setShowPass(false) }}><EyeIcon className="h-5 w-5" /></Button>
+                                                       : <Button type="button" className="mx-2" onClick={() => { setShowPass(true) }}> <EyeOffIcon className="h-5 w-5" /></Button>}
+                                             </div>
                                              <FormMessage />
                                         </FormItem>
                                    )}
