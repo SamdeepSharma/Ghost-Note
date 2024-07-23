@@ -61,7 +61,6 @@ const page = () => {
         })
       }
     } catch (error) {
-      console.error('Error in sign-in of user', error)
       toast({
         title: 'Sign-in failed',
         description: 'Please try again.',

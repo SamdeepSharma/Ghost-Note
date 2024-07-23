@@ -15,7 +15,6 @@ import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
 import { Loader2, LoaderPinwheel, RefreshCcw } from 'lucide-react'
 import MessageCard from '@/components/MessageCard'
-import Link from 'next/link'
 
 const Dashboard = () => {
      const [messages, setMessages] = useState<Message[]>([])

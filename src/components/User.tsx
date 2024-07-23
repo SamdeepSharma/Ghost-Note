@@ -49,7 +49,6 @@ const User = () => {
     try {
       complete('');
       const result = await axios.post('/api/suggest-messages')
-      console.log(result.data.suggestions)
       const suggestions = result.data.suggestions.split('||')
       setResponse(suggestions)
       toast({
@@ -60,7 +59,6 @@ const User = () => {
       const suggestions = initialMessageString.split('||')
       setResponse(suggestions)
       const axiosError = error as AxiosError<ApiResponse>;
-      console.log(axiosError)
       toast({
         title: 'Fetched default suggested messages',
         description: 'Gemini free-version limit exceeded.'
