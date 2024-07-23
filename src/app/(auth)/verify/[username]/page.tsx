@@ -6,7 +6,7 @@ import { ApiResponse } from '@/types/ApiResponse'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { useParams, useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
@@ -17,6 +17,30 @@ const VerifyAccount = () => {
      const router = useRouter()
      const params = useParams<{ username: string }>()
      const { toast } = useToast()
+     const [time, setTime] = useState(59)
+     const [disable, setDisable] = useState(true)
+     const [loading, setLoading] = useState(false)
+
+     useEffect(() => {
+          // Function to update the countdown every second
+          const intervalId = setInterval(() => {
+               setTime((prevTime) => {
+                    if (prevTime <= 1) {
+                         setDisable(false)
+                         clearInterval(intervalId);
+                         return 0;
+                    }
+                    return prevTime - 1;
+               });
+          }, 1000);
+          return () => clearInterval(intervalId);
+     }, [])
+
+     const minutes = Math.floor(time / 60);
+     const seconds = time % 60;
+
+     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+     const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
 
      //zod implementation
      const form = useForm<z.infer<typeof verifySchema>>({
@@ -41,10 +65,40 @@ const VerifyAccount = () => {
                console.log('Error verifying user', error)
                const axiosError = error as AxiosError<ApiResponse>
                toast({
-                    title: 'OTP Verification failed',
+                    title: 'Verification failed',
                     description: axiosError.response?.data.message,
                     variant: 'destructive'
                })
+          }
+     }
+
+     const handleClick = async () => {
+          setLoading(true)
+          setDisable(true)
+          try {
+               const res = await axios.post<ApiResponse>("/api/resend-code", {
+                    username: params.username
+               })
+               if(!res){
+                    toast({
+                         title: 'Failed to resend verification code',
+                         variant: 'destructive'
+                    })
+               }
+               toast({
+                    title: 'Verification code resent successfully',
+                    description: 'Please check your mail'
+               })
+          } catch (error) {
+               const axiosError = error as AxiosError<ApiResponse>
+               console.log(axiosError)
+               toast({
+                    title: 'Failed to resend verification code',
+                    description: axiosError.response?.data.message,
+                    variant: 'destructive'
+               })
+          } finally {
+               setLoading(false)
           }
      }
 
@@ -90,6 +144,22 @@ const VerifyAccount = () => {
                                              </>
                                              : ('Verify')
                                    }
+                              </Button>
+
+                              <FormField
+                                   name="resend"
+                                   render={({ field }) => (
+                                        <FormItem>
+                                             <FormDescription>
+                                                  Didn&apos;t receive the code? Please wait {`${formattedMinutes}:${formattedSeconds}`}
+                                             </FormDescription>
+                                             <FormMessage />
+                                        </FormItem>
+                                   )}
+                              />
+
+                              <Button type="button" variant={'outline'} onClick={handleClick} disabled={disable}>
+                                   {loading? <Loader2 className='h-5 w-5 animate-spin'/> : <>Resend code</>}
                               </Button>
                          </form>
                     </Form>

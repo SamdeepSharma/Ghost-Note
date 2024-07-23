@@ -44,9 +44,15 @@ export async function sendVerificationEmail(
              <div>
                <h2>Hello ${username},</h2>
                <p>Thank you for registering. Please use the following verification code to complete your registration:</p>
-               <p><strong>${verifyCode}</strong></p>
-               <p>If you did not request this code, please ignore this mail.</p>
+               <p><b>${verifyCode}</b></p>
+               <p>This verification code is valid only for 15 minutes.</p>
+               <br/>
                <a href="https://ghost-note.vercel.app/verify/${username}" class="button">Verify here</a>
+               <hr/>
+               <p>If you did not request this code, please ignore this mail.</p>
+               <p>Thanks for using our services</p>
+               <p>Regards,</p>
+               <p><b>Ghost Note</b></p>
              </div>
            </body>
          </html>
