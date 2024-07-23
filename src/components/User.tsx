@@ -101,7 +101,7 @@ const User = () => {
   }
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
+    <div className="py-16 px-6 lg:px-40 bg-stone-200 bg-opacity-50 rounded">
       <h1 className="text-4xl font-bold mb-6 text-center">
         Public Profile Link
       </h1>
@@ -158,7 +158,7 @@ const User = () => {
           </Button>
           <p>Click on any message below to select it.</p>
         </div>
-        <Card>
+        <Card className='bg-white bg-opacity-50'>
           <CardHeader>
             <h3 className="text-xl font-semibold">Messages</h3>
           </CardHeader>
@@ -169,7 +169,7 @@ const User = () => {
               <Button
                 key={index}
                 variant="outline"
-                className="mb-2 overflow-x-auto min-h-10"
+                className="mb-2 overflow-x-auto max-w-[500px] bg-white bg-opacity-70 min-h-10"
                 onClick={() => handleMessageClick(message)}
               >
               {message}

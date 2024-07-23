@@ -102,7 +102,7 @@ const Dashboard = () => {
      }
 
      if (!session || !session.user) {
-          return <div className='bg-stone-200 h-[89vh] w-full flex flex-col justify-center items-center'>
+          return <div className='bg-stone-200 bg-opacity-50 h-[89vh] w-full flex flex-col justify-center items-center'>
                <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
                <p className='text-xl mb-6'>Please sign in again if the process is taking longer than expected.</p>
                <LoaderPinwheel className='h-12 w-12 animate-spin' />
@@ -123,7 +123,7 @@ const Dashboard = () => {
      }
 
      return (
-          <div className='my-8 md:mx-8 lg:mx-auto p-4 bg-white rounded w-full max-w-6xl'>
+          <div className='py-12 md:px-8 lg:px-40 px-4 bg-stone-200 bg-opacity-50 rounded w-full'>
                <h1 className='text-4xl font-bold mb-4'>User Dashboard</h1>
                <div className='mb-4'>
                     <h2 className="text-lg font-semibold mb-2">Copy your unique link</h2>

@@ -22,7 +22,7 @@ export async function GET(request: Request) {
                return Response.json(
                     {
                          success: true,
-                         message: "User already Verified"
+                         message: "User already verified"
                     }, { status: 200 }
                )
           }

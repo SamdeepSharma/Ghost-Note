@@ -27,12 +27,12 @@ const Verify = () => {
                          setUserStatus('error')
                     }
 
-                    if (response.data.message === 'User already Verified') {
+                    if (response.data.message === 'User already verified') {
                          toast({
                               title: "Ghost User is already Verified"
                          })
                          setUserStatus('verified')
-                    } else if (response.data.message === 'User not Verified') {
+                    } else if (response.data.message === 'User not verified') {
                          toast({
                               title: "Please verify your account",
                               description: "Please check your mail"
@@ -73,12 +73,12 @@ const Verify = () => {
      } else if (userStatus === 'notFound') {
           return <NotFound />
      } else if (userStatus === 'error') {
-          return <div className='bg-stone-200 h-screen w-full flex flex-col justify-center items-center'>
+          return <div className='bg-stone-200 bg-opacity-50 h-screen w-full flex flex-col justify-center items-center'>
           <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
           <p className='text-2xl'>Some unexpected error occurred. Please reload this page.</p>
      </div>
      } else {
-          return <div className='bg-stone-200 h-screen w-full flex flex-col justify-center items-center'>
+          return <div className='bg-stone-200 bg-opacity-50 h-screen w-full flex flex-col justify-center items-center'>
                <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
                <LoaderPinwheel className='h-12 w-12 animate-spin' />
           </div>

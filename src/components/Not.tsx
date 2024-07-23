@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 const Not = () => {
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[89vh] bg-stone-200">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-stone-200 bg-opacity-50">
       <div className="max-w-2xl text-center">
         <span role="img" aria-label="coffin" className="text-8xl">💀</span>
         <h1 className="text-5xl font-bold mt-4">Not accepting messages.</h1>

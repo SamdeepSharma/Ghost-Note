@@ -13,7 +13,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 export default function Home() {
   return (
     <>
-      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-24 md:py-12 bg-gray-100 text-black">
+      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-16 md:py-12 bg-gray-200 bg-opacity-50 text-black">
         <section className="text-center mb-8 md:mb-12">
           <h1 className="text-3xl md:text-5xl font-bold">
             Dive into the World of Anonymous Feedback
@@ -28,7 +28,7 @@ export default function Home() {
               content.map((message, index) => (
                 <CarouselItem key={index}>
                   <div className="p-1">
-                    <Card className="bg-stone-200">
+                    <Card className="bg-neutral-300 bg-opacity-70">
                       <CardHeader>
                         {message.title}
                       </CardHeader>
@@ -50,7 +50,7 @@ export default function Home() {
 
       </main>
 
-      <footer className="bg-stone-900 flex flex-col md:flex-row items-center justify-between shadow rounded-t-md py-4 px-6 md:py-6 md:px-8 xl:py-8 xl:px-14 text-center">
+      <footer className="bg-stone-900 bg-opacity-90 flex flex-col md:flex-row items-center justify-between shadow rounded-t-md py-4 px-6 md:py-6 md:px-8 xl:py-8 xl:px-14 text-center">
         <div className="mt-2 text-xs md:text-sm mb-3 md:mb-0 text-gray-500"><p>Copyright © 2024 | Ghost-Note | All rights reserved.</p></div>
         <div className="flex sm:justify-center space-x-6">
           <a href="https://www.instagram.com/samdeep_.s/" target="_blank" className="text-gray-500 hover:text-neutral-300">
