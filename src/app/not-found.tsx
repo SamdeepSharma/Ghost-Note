@@ -5,7 +5,7 @@ import {Globe2} from 'lucide-react'
 
 const NotFoundPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-stone-200">
+    <div className="flex flex-col items-center justify-center h-screen overflow-auto bg-stone-200">
       <Globe2 className='text-gray-800 h-28 w-28' />
       <div className="max-w-2xl text-center">
         <h1 className="text-3xl font-bold mt-4">Oops! Looks like you&apos;re lost in cyberspace.</h1>

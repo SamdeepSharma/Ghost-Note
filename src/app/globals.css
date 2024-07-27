@@ -86,3 +86,8 @@
     opacity: 0.3;
     z-index: -1;
   }
+
+  /* For WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  display: none;
+}

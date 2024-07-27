@@ -123,7 +123,7 @@ const Dashboard = () => {
      }
 
      return (
-          <div className='py-12 md:px-8 lg:px-40 px-4 bg-stone-200 bg-opacity-50 rounded w-full'>
+          <div className='py-12 md:px-8 lg:px-40 px-4 bg-stone-200 bg-opacity-50 rounded w-full h-screen overflow-auto'>
                <h1 className='text-4xl font-bold mb-4'>User Dashboard</h1>
                <div className='mb-4'>
                     <h2 className="text-lg font-semibold mb-2">Copy your unique link</h2>

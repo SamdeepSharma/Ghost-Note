@@ -73,12 +73,12 @@ const Verify = () => {
      } else if (userStatus === 'notFound') {
           return <NotFound />
      } else if (userStatus === 'error') {
-          return <div className='bg-stone-200 bg-opacity-50 h-screen w-full flex flex-col justify-center items-center'>
+          return <div className='bg-stone-200 bg-opacity-50 h-screen overflow-auto w-full flex flex-col justify-center items-center'>
           <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
           <p className='text-2xl'>Some unexpected error occurred. Please reload this page.</p>
      </div>
      } else {
-          return <div className='bg-stone-200 bg-opacity-50 h-screen w-full flex flex-col justify-center items-center'>
+          return <div className='bg-stone-200 bg-opacity-50 h-screen overflow-auto w-full flex flex-col justify-center items-center'>
                <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
                <LoaderPinwheel className='h-12 w-12 animate-spin' />
           </div>
