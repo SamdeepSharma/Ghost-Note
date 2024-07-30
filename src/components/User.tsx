@@ -101,9 +101,9 @@ const User = () => {
   }
 
   return (
-    <div className="py-16 px-6 lg:px-40 bg-stone-200 bg-opacity-50 rounded">
+    <div className="py-16 px-6 lg:px-40 bg-stone-200 bg-opacity-50 rounded h-screen overflow-auto">
       <h1 className="text-4xl font-bold mb-6 text-center">
-        Public Profile Link
+        Ghost Profile
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -122,7 +122,7 @@ const User = () => {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            )}
+            )} 
           />
           <div className="flex justify-center">
             {form.formState.isSubmitting ? (

@@ -31,7 +31,6 @@ const page = () => {
      const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
           try {
                const response = await axios.post<ApiResponse>("/api/forgot-password", data)
-               console.log(response)
                if (!response) {
                     toast({
                          title: 'Reset password failed',
@@ -46,7 +45,6 @@ const page = () => {
                setRender(true)
           } catch (error) {
                const axiosError = error as AxiosError<ApiResponse>
-               console.log(axiosError)
                if (axiosError.response?.status == 404) {
                     toast({
                          title: "User not found!",
