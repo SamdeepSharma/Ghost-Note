@@ -13,7 +13,7 @@ import { User } from 'next-auth'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Switch } from '@/components/ui/switch'
-import { Loader2, LoaderPinwheel, RefreshCcw } from 'lucide-react'
+import { LoaderPinwheel, RefreshCcw } from 'lucide-react'
 import MessageCard from '@/components/MessageCard'
 
 const Dashboard = () => {
@@ -104,7 +104,7 @@ const Dashboard = () => {
      if (!session || !session.user) {
           return <div className='bg-stone-200 bg-opacity-50 h-[89vh] w-full flex flex-col justify-center items-center'>
                <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
-               <p className='text-xl mb-6'>Please sign in again if the process is taking longer than expected.</p>
+               <p className='text-xl text-center mb-6'>Please sign in again if the process is taking longer than expected.</p>
                <LoaderPinwheel className='h-12 w-12 animate-spin' />
           </div>
      }

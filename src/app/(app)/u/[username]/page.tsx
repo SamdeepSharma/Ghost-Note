@@ -75,7 +75,7 @@ const UserPage = () => {
      } else if (userStatus === 'error') {
           return <div className='bg-stone-200 bg-opacity-50 h-[89vh] w-full flex flex-col justify-center items-center'>
           <h1 className='mb-6 text-5xl font-bold'>Ghost Note</h1>
-          <p className='text-2xl'>Some unexpected error occurred. Please reload this page.</p>
+          <p className='text-2xl text-center'>Some unexpected error occurred. Please reload this page.</p>
      </div>
      } else {
           return <div className='bg-stone-200 bg-opacity-50 h-[89vh] w-full flex flex-col justify-center items-center'>
