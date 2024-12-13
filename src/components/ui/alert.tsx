@@ -1,7 +1,6 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
-import { Info } from "lucide-react"
 
 const alertVariants = cva(
   "relative rounded-lg border p-4 flex items-start space-x-4 shadow-md transition-all duration-300 ease-in-out",

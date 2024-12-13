@@ -6,7 +6,7 @@ const AlertWrapper = () => {
       <Alert
         onClick={()=>{scrollTo(0,document.body.scrollHeight)}} 
         variant="info" 
-        timeout={10000} 
+        timeout={2000} 
         onClose={() => console.log('Alert closed')}
         className="m-2 hover:cursor-pointer shadow-lg md:mx-auto"
       >
