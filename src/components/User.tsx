@@ -33,7 +33,7 @@ const User = () => {
   const params = useParams<{ username: string }>()
 
   const initialMessageString =
-    `What song always gets stuck in your head? || If your life had a theme song, what would it be? || What's the most unexpected place you've met someone interesting? || What's a small thing that always makes you smile? || If you could instantly master any skill, what would it be? || What's your favorite way to spend a rainy day?`
+    `What song always gets stuck in your head? || If your life had a theme song, what would it be? || What's the most unexpected place you've met someone interesting? || What's a small thing that always makes you smile? || If you could instantly master any skill, what would it be?`
 
   const {
     complete,
@@ -51,10 +51,13 @@ const User = () => {
       
       const suggestions = result.data.suggestions.split('||')
       setResponse(suggestions)
-      toast({
-        title: '✨ Fresh AI Suggestions',
-        description: 'New creative messages generated for you!',
-      })
+      // Only show toast for successful AI suggestions
+      if (refresh) {
+        toast({
+          title: '✨ Fresh AI Suggestions',
+          description: 'New creative messages generated for you!',
+        })
+      }
     } catch (error) {
       console.error("❌ Frontend: API call failed", error);
       const suggestions = initialMessageString.split('||')
@@ -245,11 +248,11 @@ const User = () => {
                 className="w-full justify-start text-left h-auto p-4 border-stone-200 bg-white/50 hover:bg-stone-50 hover:border-stone-300 transition-all group"
                 onClick={() => handleMessageClick(message)}
               >
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3 overflow-auto">
                   <div className="w-6 h-6 bg-gradient-to-br from-stone-100 to-stone-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <span className="text-xs font-medium text-stone-600">{index + 1}</span>
                   </div>
-                  <span className="text-sm leading-relaxed">{message}</span>
+                  <span className="text-sm leading-relaxed break-words">{message}</span>
                 </div>
               </Button>
             ))}

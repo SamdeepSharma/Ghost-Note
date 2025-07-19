@@ -14,7 +14,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const prompt = `You are a creative message generator for an anonymous social messaging platform called "Ghost Note". Your task is to create 3 engaging, thought-provoking, and conversation-starting questions that users can send anonymously to others.
+    const prompt = `You are a creative message generator for an anonymous social messaging platform called "Ghost Note". Your task is to create 5 engaging, thought-provoking, and conversation-starting questions that users can send anonymously to others.
 
 CONTEXT:
 - This is for an anonymous messaging platform where people send messages to others
@@ -23,7 +23,7 @@ CONTEXT:
 - Messages should be suitable for a diverse, global audience
 
 REQUIREMENTS:
-- Create exactly 3 questions separated by '||'
+- Create exactly 5 questions separated by '||'
 - Each question should be 15-25 words maximum
 - Questions should be open-ended and encourage thoughtful responses
 - Mix of different themes: personal reflection, hypothetical scenarios, life experiences, creativity, humor, and deep thinking
@@ -35,14 +35,18 @@ THEMES TO INCLUDE (one per question):
 1. Personal reflection or self-discovery
 2. Hypothetical scenario or "what if" question
 3. Creative thinking or imagination
+4. Life experiences or memories
+5. Future aspirations or dreams
 
 EXAMPLES OF GOOD QUESTIONS:
 - "If you could have dinner with any fictional character, who would it be and why?"
 - "What's a small moment from today that made you smile?"
 - "If your life had a soundtrack, what song would be playing right now?"
+- "What's the most unexpected place you've met someone interesting?"
+- "If you could instantly master any skill, what would it be?"
 
 OUTPUT FORMAT:
-Return only the 3 questions separated by '||' with no additional text, quotes, or formatting.
+Return only the 5 questions separated by '||' with no additional text, quotes, or formatting.
 
 Generate fresh, creative questions that haven't been used before. Make them engaging enough that someone would want to respond to them.`;
 
