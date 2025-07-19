@@ -6,7 +6,6 @@ export async function POST(request: Request) {
 
      try {
           const { email, otp } = await request.json()
-          console.log('OTP verification attempt:', { email, otp })
           
           const user = await UserModel.findOne({ email })
 
@@ -18,12 +17,6 @@ export async function POST(request: Request) {
                     }, { status: 404 }
                )
           }
-          
-          console.log('User found:', {
-               email: user.email,
-               verifyCode: user.verifyCode,
-               verifyCodeExpiry: user.verifyCodeExpiry
-          })
           
           const isCodeValid = user.verifyCode === otp
           const isCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date()
@@ -60,7 +53,6 @@ export async function POST(request: Request) {
                }, {status: 200}
           )
      } catch (error) {
-          console.log(error)
           return Response.json(
                {
                     success: false,

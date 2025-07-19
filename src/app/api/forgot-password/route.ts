@@ -36,33 +36,13 @@ export async function POST(request: Request) {
           const otp = String(Math.floor(Math.random() * 1000000)).padStart(6, '0')
           const expiryTime = new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
           
-          console.log('Generated OTP:', { otp, expiryTime })
-          
           // Update user with OTP using the same pattern as verification
           user.verifyCode = otp
           user.verifyCodeExpiry = expiryTime
           await user.save()
           
-          console.log('User updated with OTP:', {
-               email: user.email,
-               verifyCode: user.verifyCode,
-               verifyCodeExpiry: user.verifyCodeExpiry
-          })
-          
           // Verify the OTP was saved by fetching again
           const verifyUser = await UserModel.findOne({ email }).lean()
-          console.log('Verification - User after update:', {
-               email: verifyUser?.email,
-               verifyCode: verifyUser?.verifyCode,
-               verifyCodeExpiry: verifyUser?.verifyCodeExpiry
-          })
-          
-          console.log('Attempting to send email to:', email)
-          console.log('Email credentials check:', {
-               hasEmail: !!process.env.GHOST_NOTE_EMAIL,
-               hasPassword: !!process.env.GHOST_NOTE_PASS,
-               emailLength: process.env.GHOST_NOTE_EMAIL?.length
-          })
           
           const emailResponse = await sendResetPasswordEmail(
                email,
@@ -70,10 +50,7 @@ export async function POST(request: Request) {
                otp
           )
           
-          console.log('Email response:', emailResponse)
-          
           if(!emailResponse.success){
-               console.error('Email sending failed:', emailResponse.message)
                return Response.json(
                     {
                          success: false,
@@ -91,7 +68,6 @@ export async function POST(request: Request) {
                }, {status: 200}
           )
      } catch (error) {
-          console.log(error)
           return Response.json(
                {
                     success: false,

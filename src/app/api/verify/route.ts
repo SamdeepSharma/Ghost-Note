@@ -34,7 +34,6 @@ export async function GET(request: Request) {
           )
 
      } catch (error) {
-          console.log(error)
           return Response.json(
                {
                     suceess: false,

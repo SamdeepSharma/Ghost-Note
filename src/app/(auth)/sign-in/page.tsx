@@ -9,7 +9,8 @@ import { useRouter } from "next/navigation"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { EyeIcon, EyeOffIcon, Loader2, Sparkles, ArrowLeft } from "lucide-react"
 import { signInSchema } from "@/schemas/signInSchema"
 import { signIn } from "next-auth/react"
 import { useState } from "react"
@@ -71,64 +72,117 @@ const page = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen overflow-auto bg-gray-100 bg-opacity-50">
-      <div className="flex justify-center items-center h-screen overflow-auto bg-gray-100 bg-opacity-50">
-        <div className="w-full max-w-lg p-8 space-y-8 bg-white bg-opacity-50 rounded-lg shadow-md">
-          <div className="text-center">
-            <Link href={"/"}><h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Ghost Note</h1></Link>
-            <p className="mb-4">Sign-in to start your anonymous adventure.</p>
-          </div>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                name="identifier"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email or Username</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="email or username" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="password"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <div className="flex justify-center items-center">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-stone-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <Card className="border-stone-200 bg-white/70 backdrop-blur-sm shadow-lg">
+          <CardHeader className="space-y-6 pb-6">
+            <div className="text-center">
+              <Link 
+                href={"/"} 
+                className="inline-flex items-center gap-2 text-2xl font-bold text-stone-900 hover:text-stone-700 transition-colors"
+              >
+                <Sparkles className="h-6 w-6 text-stone-600" />
+                Ghost Note
+              </Link>
+              <p className="mt-2 text-stone-600">Welcome back! Sign in to continue your anonymous journey.</p>
+            </div>
+          </CardHeader>
+          
+          <CardContent className="space-y-6">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  name="identifier"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-stone-700 font-medium">Email or Username</FormLabel>
                       <FormControl>
-                        <Input type={`${showPass ? "text" : "password"}`} placeholder="password" {...field} />
+                        <Input 
+                          type="text" 
+                          placeholder="Enter your email or username" 
+                          className="border-stone-300 focus:border-stone-500 focus:ring-stone-500"
+                          {...field} 
+                        />
                       </FormControl>
-                      {showPass ? <Button type="button" className="mx-2" onClick={() => { setShowPass(false) }}><EyeIcon className="h-5 w-5" /></Button>
-                        : <Button type="button" className="mx-2" onClick={() => { setShowPass(true) }}> <EyeOffIcon className="h-5 w-5" /></Button>}
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" disabled={formState.isSubmitting}>
-                {
-                  formState.isSubmitting ?
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="password"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-stone-700 font-medium">Password</FormLabel>
+                      <div className="relative">
+                        <FormControl>
+                          <Input 
+                            type={`${showPass ? "text" : "password"}`} 
+                            placeholder="Enter your password" 
+                            className="border-stone-300 focus:border-stone-500 focus:ring-stone-500 pr-12"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <Button 
+                          type="button" 
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-1 top-1 h-8 w-8 p-0 text-stone-500 hover:text-stone-700" 
+                          onClick={() => { setShowPass(!showPass) }}
+                        >
+                          {showPass ? <EyeIcon className="h-4 w-4" /> : <EyeOffIcon className="h-4 w-4" />}
+                        </Button>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button 
+                  type="submit" 
+                  disabled={formState.isSubmitting}
+                  className="w-full bg-gradient-to-r from-stone-700 to-stone-800 text-white shadow-sm hover:from-stone-800 hover:to-stone-900 transition-all"
+                >
+                  {formState.isSubmitting ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />Signing in
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Signing in...
                     </>
-                    : ('Sign in')
-                }
-              </Button>
-            </form>
-          </Form>
-          <div className="text-center mt-4">
-            <p>Not a member?{'  '}
-              <Link href={'/sign-up'} className="text-blue-600 hover:text-blue-800">Sign-up</Link>
-            </p>
-            <p>Forgot password?{'  '}
-              <Link href={'/forgot-pass'} className="text-blue-600 hover:text-blue-800">Regain access</Link>
-            </p>
-          </div>
+                  ) : (
+                    'Sign in'
+                  )}
+                </Button>
+              </form>
+            </Form>
+            
+            <div className="space-y-3 pt-4 border-t border-stone-200">
+              <div className="text-center">
+                <p className="text-sm text-stone-600">
+                  Don&apos;t have an account?{' '}
+                  <Link href={'/sign-up'} className="font-medium text-stone-700 hover:text-stone-900 transition-colors">
+                    Sign up
+                  </Link>
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-sm text-stone-600">
+                  <Link href={'/forgot-pass'} className="font-medium text-stone-700 hover:text-stone-900 transition-colors">
+                    Forgot your password?
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <div className="mt-6 text-center">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-2 text-sm text-stone-600 hover:text-stone-800 transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to home
+          </Link>
         </div>
       </div>
     </div>

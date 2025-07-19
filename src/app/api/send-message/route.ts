@@ -39,7 +39,6 @@ export async function POST(request: Request) {
           )
 
      } catch (error) {
-          console.log("Error sending message.", error)
           return Response.json(
                {
                     success: false,
@@ -100,7 +99,6 @@ export async function GET(request: Request) {
           }
 
      } catch (error) {
-          console.log('Error fetching status', error)
           return Response.json(
                {
                     status: false,

@@ -69,14 +69,7 @@ export async function sendResetPasswordEmail(
      };
 
      try {
-          console.log('Email configuration:', {
-               service: 'gmail',
-               user: process.env.GHOST_NOTE_EMAIL,
-               hasPassword: !!process.env.GHOST_NOTE_PASS
-          })
-          
           const res = await transporter.sendMail(mailOptions);
-          console.log('Email sent successfully: ' + res.response);
           return { success: true, message: "Reset Password OTP sent successfully." }
 
      } catch (emailError: any) {

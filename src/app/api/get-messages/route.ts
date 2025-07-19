@@ -51,7 +51,7 @@ export async function GET(request: Request) {
                }
           ]);
 
-          console.log(foundUser)
+
 
           if (!foundUser) {
                return Response.json(
@@ -70,7 +70,6 @@ export async function GET(request: Request) {
           )
 
      } catch (error) {
-          console.log("Error fetching messages.", error)
           return Response.json(
                {
                     success: false,

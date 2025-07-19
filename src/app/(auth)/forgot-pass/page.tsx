@@ -8,7 +8,9 @@ import { useToast } from "@/components/ui/use-toast"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Loader2 } from "lucide-react"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Loader2, Sparkles, ArrowLeft, Mail, Shield, CheckCircle, Lock, Eye, EyeOff } from "lucide-react"
 import { forgotPasswordSchema, otpVerificationSchema, resetPasswordSchema } from "@/schemas/forgotPasswordSchema"
 import { useState, useEffect } from "react"
 import { ApiResponse } from "@/types/ApiResponse"
@@ -21,6 +23,8 @@ const ForgotPasswordPage = () => {
      const [currentStep, setCurrentStep] = useState<Step>('email')
      const [email, setEmail] = useState('')
      const [otp, setOtp] = useState('')
+     const [showPassword, setShowPassword] = useState(false)
+     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
      // Email form
      const emailForm = useForm<z.infer<typeof forgotPasswordSchema>>({
@@ -67,12 +71,19 @@ const ForgotPasswordPage = () => {
      const onEmailSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
           try {
                const response = await axios.post<ApiResponse>("/api/forgot-password", data)
+               
                if (response.data.success) {
                     setEmail(data.email)
                     setCurrentStep('otp')
                     toast({
                          title: 'OTP Sent',
                          description: 'Please check your email for the OTP.',
+                    })
+               } else {
+                    toast({
+                         title: 'Error',
+                         description: response.data.message || 'Failed to send OTP',
+                         variant: 'destructive'
                     })
                }
           } catch (error) {
@@ -141,6 +152,88 @@ const ForgotPasswordPage = () => {
           }
      }
 
+     const getStepNumber = (step: Step) => {
+          const steps = ['email', 'otp', 'password', 'success']
+          return steps.indexOf(step) + 1
+     }
+
+     const getStepIcon = (step: Step) => {
+          switch (step) {
+               case 'email': return <Mail className="h-4 w-4" />
+               case 'otp': return <Shield className="h-4 w-4" />
+               case 'password': return <Lock className="h-4 w-4" />
+               case 'success': return <CheckCircle className="h-4 w-4" />
+               default: return <Mail className="h-4 w-4" />
+          }
+     }
+
+     const getStepTitle = () => {
+          switch (currentStep) {
+               case 'email':
+                    return 'Reset Your Password'
+               case 'otp':
+                    return 'Verify Your Email'
+               case 'password':
+                    return 'Set New Password'
+               case 'success':
+                    return 'Password Reset Complete!'
+               default:
+                    return 'Reset Your Password'
+          }
+     }
+
+     const getStepDescription = () => {
+          switch (currentStep) {
+               case 'email':
+                    return 'Enter your email address to receive a secure reset code.'
+               case 'otp':
+                    return 'Enter the 6-digit code sent to your email address.'
+               case 'password':
+                    return 'Create a strong new password for your account.'
+               case 'success':
+                    return 'Your password has been successfully reset. You can now sign in with your new password.'
+               default:
+                    return 'Enter your email address to receive a secure reset code.'
+          }
+     }
+
+     const renderProgressBar = () => (
+          <div className="mb-8">
+               <div className="flex items-center justify-between mb-4">
+                    {['email', 'otp', 'password', 'success'].map((step, index) => (
+                         <div key={step} className="flex items-center">
+                              <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all ${
+                                   getStepNumber(currentStep) > index + 1
+                                        ? 'bg-green-500 border-green-500 text-white'
+                                        : getStepNumber(currentStep) === index + 1
+                                        ? 'bg-stone-700 border-stone-700 text-white'
+                                        : 'bg-white border-stone-300 text-stone-400'
+                              }`}>
+                                   {getStepNumber(currentStep) > index + 1 ? (
+                                        <CheckCircle className="h-4 w-4" />
+                                   ) : (
+                                        getStepIcon(step as Step)
+                                   )}
+                              </div>
+                              {index < 3 && (
+                                   <div className={`w-12 h-0.5 mx-2 transition-all ${
+                                        getStepNumber(currentStep) > index + 1
+                                             ? 'bg-green-500'
+                                             : 'bg-stone-200'
+                                   }`} />
+                              )}
+                         </div>
+                    ))}
+               </div>
+               <div className="flex justify-between text-xs text-stone-500">
+                    <span>Enter Email</span>
+                    <span>Verify Code</span>
+                    <span>New Password</span>
+                    <span>Complete</span>
+               </div>
+          </div>
+     )
+
      const renderEmailStep = () => (
           <Form {...emailForm}>
                <form onSubmit={emailForm.handleSubmit(onEmailSubmit)} className="space-y-6">
@@ -149,22 +242,31 @@ const ForgotPasswordPage = () => {
                          control={emailForm.control}
                          render={({ field }) => (
                               <FormItem>
-                                   <FormLabel>Email</FormLabel>
+                                   <FormLabel className="text-stone-700 font-medium">Email Address</FormLabel>
                                    <FormControl>
-                                        <Input type="email" placeholder="Enter your email" {...field} />
+                                        <Input 
+                                             type="email" 
+                                             placeholder="Enter your email address" 
+                                             className="border-stone-300 focus:border-stone-500 focus:ring-stone-500"
+                                             {...field} 
+                                        />
                                    </FormControl>
                                    <FormMessage />
                               </FormItem>
                          )}
                     />
-                    <Button type="submit" disabled={emailForm.formState.isSubmitting} className="w-full">
+                    <Button 
+                         type="submit" 
+                         disabled={emailForm.formState.isSubmitting} 
+                         className="w-full bg-gradient-to-r from-stone-700 to-stone-800 text-white shadow-sm hover:from-stone-800 hover:to-stone-900 transition-all"
+                    >
                          {emailForm.formState.isSubmitting ? (
                               <>
                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                                   Sending OTP...
+                                   Sending Code...
                               </>
                          ) : (
-                              'Send OTP'
+                              'Send Reset Code'
                          )}
                     </Button>
                </form>
@@ -174,47 +276,48 @@ const ForgotPasswordPage = () => {
      const renderOtpStep = () => (
           <Form {...otpForm}>
                <form onSubmit={otpForm.handleSubmit(onOtpSubmit)} className="space-y-6">
-                                         <FormField
-                          name="email"
-                          control={otpForm.control}
-                          render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                         <Input type="email" disabled {...field} value={email} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                          )}
-                     />
+                    <div className="p-4 bg-stone-50 rounded-lg border border-stone-200">
+                         <p className="text-sm text-stone-600 mb-2">Code sent to:</p>
+                         <p className="font-medium text-stone-900">{email}</p>
+                    </div>
                     <FormField
                          name="otp"
                          control={otpForm.control}
                          render={({ field }) => (
                               <FormItem>
-                                   <FormLabel>OTP</FormLabel>
+                                   <FormLabel className="text-stone-700 font-medium">Verification Code</FormLabel>
                                    <FormControl>
-                                        <Input type="text" placeholder="Enter 6-digit OTP" maxLength={6} {...field} />
+                                        <Input 
+                                             type="text" 
+                                             placeholder="Enter 6-digit code" 
+                                             maxLength={6} 
+                                             className="border-stone-300 focus:border-stone-500 focus:ring-stone-500 text-center text-lg tracking-widest"
+                                             {...field} 
+                                        />
                                    </FormControl>
                                    <FormMessage />
                               </FormItem>
                          )}
                     />
-                    <Button type="submit" disabled={otpForm.formState.isSubmitting} className="w-full">
+                    <Button 
+                         type="submit" 
+                         disabled={otpForm.formState.isSubmitting} 
+                         className="w-full bg-gradient-to-r from-stone-700 to-stone-800 text-white shadow-sm hover:from-stone-800 hover:to-stone-900 transition-all"
+                    >
                          {otpForm.formState.isSubmitting ? (
                               <>
                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
                                    Verifying...
                               </>
                          ) : (
-                              'Verify OTP'
+                              'Verify Code'
                          )}
                     </Button>
                     <Button 
                          type="button" 
                          variant="outline" 
                          onClick={() => setCurrentStep('email')}
-                         className="w-full"
+                         className="w-full border-stone-300 text-stone-700 hover:bg-stone-50"
                     >
                          Back to Email
                     </Button>
@@ -225,41 +328,31 @@ const ForgotPasswordPage = () => {
      const renderPasswordStep = () => (
           <Form {...passwordForm}>
                <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-6">
-                                         <FormField
-                          name="email"
-                          control={passwordForm.control}
-                          render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                         <Input type="email" disabled {...field} value={email} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                          )}
-                     />
-                                         <FormField
-                          name="otp"
-                          control={passwordForm.control}
-                          render={({ field }) => (
-                               <FormItem>
-                                    <FormLabel>OTP</FormLabel>
-                                    <FormControl>
-                                         <Input type="text" disabled {...field} value={otp} />
-                                    </FormControl>
-                                    <FormMessage />
-                               </FormItem>
-                          )}
-                     />
                     <FormField
                          name="newPassword"
                          control={passwordForm.control}
                          render={({ field }) => (
                               <FormItem>
-                                   <FormLabel>New Password</FormLabel>
-                                   <FormControl>
-                                        <Input type="password" placeholder="Enter new password" {...field} />
-                                   </FormControl>
+                                   <FormLabel className="text-stone-700 font-medium">New Password</FormLabel>
+                                   <div className="relative">
+                                        <FormControl>
+                                             <Input 
+                                                  type={showPassword ? "text" : "password"}
+                                                  placeholder="Create a strong password" 
+                                                  className="border-stone-300 focus:border-stone-500 focus:ring-stone-500 pr-12"
+                                                  {...field} 
+                                             />
+                                        </FormControl>
+                                        <Button 
+                                             type="button" 
+                                             variant="ghost"
+                                             size="sm"
+                                             className="absolute right-1 top-1 h-8 w-8 p-0 text-stone-500 hover:text-stone-700" 
+                                             onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                             {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                                        </Button>
+                                   </div>
                                    <FormMessage />
                               </FormItem>
                          )}
@@ -269,15 +362,35 @@ const ForgotPasswordPage = () => {
                          control={passwordForm.control}
                          render={({ field }) => (
                               <FormItem>
-                                   <FormLabel>Confirm Password</FormLabel>
-                                   <FormControl>
-                                        <Input type="password" placeholder="Confirm new password" {...field} />
-                                   </FormControl>
+                                   <FormLabel className="text-stone-700 font-medium">Confirm Password</FormLabel>
+                                   <div className="relative">
+                                        <FormControl>
+                                             <Input 
+                                                  type={showConfirmPassword ? "text" : "password"}
+                                                  placeholder="Confirm your new password" 
+                                                  className="border-stone-300 focus:border-stone-500 focus:ring-stone-500 pr-12"
+                                                  {...field} 
+                                             />
+                                        </FormControl>
+                                        <Button 
+                                             type="button" 
+                                             variant="ghost"
+                                             size="sm"
+                                             className="absolute right-1 top-1 h-8 w-8 p-0 text-stone-500 hover:text-stone-700" 
+                                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        >
+                                             {showConfirmPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                                        </Button>
+                                   </div>
                                    <FormMessage />
                               </FormItem>
                          )}
                     />
-                    <Button type="submit" disabled={passwordForm.formState.isSubmitting} className="w-full">
+                    <Button 
+                         type="submit" 
+                         disabled={passwordForm.formState.isSubmitting} 
+                         className="w-full bg-gradient-to-r from-stone-700 to-stone-800 text-white shadow-sm hover:from-stone-800 hover:to-stone-900 transition-all"
+                    >
                          {passwordForm.formState.isSubmitting ? (
                               <>
                                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -291,9 +404,9 @@ const ForgotPasswordPage = () => {
                          type="button" 
                          variant="outline" 
                          onClick={() => setCurrentStep('otp')}
-                         className="w-full"
+                         className="w-full border-stone-300 text-stone-700 hover:bg-stone-50"
                     >
-                         Back to OTP
+                         Back to Code
                     </Button>
                </form>
           </Form>
@@ -301,66 +414,59 @@ const ForgotPasswordPage = () => {
 
      const renderSuccessStep = () => (
           <div className="space-y-6 text-center">
-               <div className="text-green-600">
-                    <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <h3 className="text-xl font-semibold mb-2">Password Reset Successful!</h3>
-                    <p className="text-gray-600">Your password has been reset successfully. You can now sign in with your new password.</p>
+               <div className="flex justify-center">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                         <CheckCircle className="h-8 w-8 text-green-600" />
+                    </div>
+               </div>
+               <div>
+                    <h3 className="text-xl font-semibold text-stone-900 mb-2">Password Reset Complete!</h3>
+                    <p className="text-stone-600 pb-2">Your password has been successfully reset. You can now sign in with your new password.</p>
                </div>
                <Link href="/sign-in">
-                    <Button className="w-full">Sign In</Button>
+                    <Button className="w-full bg-gradient-to-r from-stone-700 to-stone-800 text-white shadow-sm hover:from-stone-800 hover:to-stone-900 transition-all">
+                         Sign In Now
+                    </Button>
                </Link>
           </div>
      )
 
-     const getStepTitle = () => {
-          switch (currentStep) {
-               case 'email':
-                    return 'Reset Password'
-               case 'otp':
-                    return 'Enter OTP'
-               case 'password':
-                    return 'Set New Password'
-               case 'success':
-                    return 'Success'
-               default:
-                    return 'Reset Password'
-          }
-     }
-
-     const getStepDescription = () => {
-          switch (currentStep) {
-               case 'email':
-                    return 'Enter your email address to receive a password reset OTP.'
-               case 'otp':
-                    return 'Enter the 6-digit OTP sent to your email.'
-               case 'password':
-                    return 'Enter your new password.'
-               case 'success':
-                    return ''
-               default:
-                    return 'Enter your email address to receive a password reset OTP.'
-          }
-     }
-
      return (
-          <div className="flex justify-center items-center min-h-screen overflow-auto bg-gray-100 bg-opacity-50">
-               <div className="w-full max-w-lg p-8 space-y-8 bg-white bg-opacity-50 rounded-lg shadow-md">
-                    <div className="text-center">
-                         <Link href={"/"}>
-                              <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Ghost Note</h1>
-                         </Link>
-                         <h2 className="text-2xl font-semibold mb-2">{getStepTitle()}</h2>
-                         {getStepDescription() && (
-                              <p className="text-gray-600 mb-4">{getStepDescription()}</p>
-                         )}
-                    </div>
+          <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-stone-100 flex items-center justify-center p-4">
+               <div className="w-full max-w-md">
+                    <Card className="border-stone-200 bg-white/70 backdrop-blur-sm shadow-lg">
+                         <CardHeader className="space-y-6 pb-6">
+                              <div className="text-center">
+                                   <Link 
+                                        href={"/"} 
+                                        className="inline-flex items-center gap-2 text-2xl font-bold text-stone-900 hover:text-stone-700 transition-colors"
+                                   >
+                                        <Sparkles className="h-6 w-6 text-stone-600" />
+                                        Ghost Note
+                                   </Link>
+                                   <h2 className="mt-4 text-xl font-semibold text-stone-900">{getStepTitle()}</h2>
+                                   <p className="mt-2 text-sm text-stone-600">{getStepDescription()}</p>
+                              </div>
+                              {renderProgressBar()}
+                         </CardHeader>
+                         
+                         <CardContent className="space-y-6">
+                              {currentStep === 'email' && renderEmailStep()}
+                              {currentStep === 'otp' && renderOtpStep()}
+                              {currentStep === 'password' && renderPasswordStep()}
+                              {currentStep === 'success' && renderSuccessStep()}
+                         </CardContent>
+                    </Card>
                     
-                    {currentStep === 'email' && renderEmailStep()}
-                    {currentStep === 'otp' && renderOtpStep()}
-                    {currentStep === 'password' && renderPasswordStep()}
-                    {currentStep === 'success' && renderSuccessStep()}
+                    <div className="mt-6 text-center">
+                         <Link 
+                              href="/sign-in" 
+                              className="inline-flex items-center gap-2 text-sm text-stone-600 hover:text-stone-800 transition-colors"
+                         >
+                              <ArrowLeft className="h-4 w-4" />
+                              Back to sign in
+                         </Link>
+                    </div>
                </div>
           </div>
      )

@@ -10,7 +10,8 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
-import { Loader2 } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/card'
+import { Loader2, Mail } from 'lucide-react'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 
 const VerifyAccount = () => {
@@ -101,12 +102,21 @@ const VerifyAccount = () => {
      }
 
      return (
-          <div className="flex justify-center items-center h-screen overflow-auto bg-gray-100 bg-opacity-50">
-               <div className="w-full max-w-lg p-8 space-y-8 bg-white bg-opacity-50 rounded-lg shadow-md">
-                    <div className="text-center">
-                         <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Verify Your Account</h1>
-                         <p className="mb-4">Please check your mail.</p>
-                    </div>
+          <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-stone-100 flex items-center justify-center p-6">
+               <div className="w-full max-w-md">
+                    <Card className="border-stone-200 bg-white/70 backdrop-blur-sm shadow-lg">
+                         <CardContent className="p-8 space-y-6">
+                              <div className="text-center space-y-4">
+                                   <div className="mx-auto w-24 h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
+                                        <Mail className="h-12 w-12 text-blue-600" />
+                                   </div>
+                                   <div className="space-y-2">
+                                        <h1 className="text-2xl font-bold bg-gradient-to-r from-stone-800 to-stone-600 bg-clip-text text-transparent">
+                                             Verify Your Account
+                                        </h1>
+                                        <p className="text-stone-600">Please check your email for the verification code.</p>
+                                   </div>
+                              </div>
                     <Form {...form}>
                          <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
                               <FormField
@@ -134,33 +144,52 @@ const VerifyAccount = () => {
                                         </FormItem>
                                    )}
                               />
-                              <Button type="submit" disabled={formState.isSubmitting}>
+                              <Button 
+                                   type="submit" 
+                                   disabled={formState.isSubmitting}
+                                   className="w-full bg-gradient-to-r from-stone-700 to-stone-800 text-white shadow-sm hover:from-stone-800 hover:to-stone-900 transition-all"
+                              >
                                    {
                                         formState.isSubmitting ?
                                              <>
-                                                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />verifying
+                                                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                  Verifying...
                                              </>
-                                             : ('Verify')
+                                             : 'Verify Account'
                                    }
                               </Button>
 
-                              <FormField
-                                   name="resend"
-                                   render={({ field }) => (
-                                        <FormItem>
-                                             <FormDescription>
-                                                  Didn&apos;t receive the code? Please wait {`${formattedMinutes}:${formattedSeconds}`}
-                                             </FormDescription>
-                                             <FormMessage />
-                                        </FormItem>
-                                   )}
-                              />
+                              <div className="space-y-4 pt-4 border-t border-stone-200">
+                                   <div className="text-center">
+                                        <p className="text-sm text-stone-600">
+                                             Didn&apos;t receive the code? Please wait{' '}
+                                             <span className="font-mono font-medium text-stone-800">
+                                                  {`${formattedMinutes}:${formattedSeconds}`}
+                                             </span>
+                                        </p>
+                                   </div>
 
-                              <Button type="button" variant={'outline'} onClick={handleClick} disabled={disable}>
-                                   {loading? <Loader2 className='h-5 w-5 animate-spin'/> : <>Resend code</>}
-                              </Button>
+                                   <Button 
+                                        type="button" 
+                                        variant="outline" 
+                                        onClick={handleClick} 
+                                        disabled={disable}
+                                        className="w-full border-stone-300 text-stone-700 hover:bg-stone-50"
+                                   >
+                                        {loading ? (
+                                             <>
+                                                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                  Sending...
+                                             </>
+                                        ) : (
+                                             'Resend Code'
+                                        )}
+                                   </Button>
+                              </div>
                          </form>
                     </Form>
+                         </CardContent>
+                    </Card>
                </div>
           </div>
      )

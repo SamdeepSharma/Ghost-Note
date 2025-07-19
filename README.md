@@ -1,6 +1,6 @@
 # 👻 Ghost Note
 
-**Anonymous Social Messaging Platform** - Connect with others through thoughtful, anonymous conversations.
+**Anonymous Social Messaging Platform** - Connect with others through thoughtful, anonymous conversations with a beautiful, modern interface.
 
 🌐 **Live Demo**: [ghost-note.vercel.app](https://ghost-note.vercel.app/)
 
@@ -12,35 +12,50 @@
 - **Last Login Tracking** for user analytics
 - **Session Management** with NextAuth.js
 - **Password Hashing** with bcrypt
+- **Username Uniqueness Validation**
 
 ### 💬 **Anonymous Messaging**
-- **AI-Powered Message Suggestions** using Google Gemini
+- **AI-Powered Message Suggestions** using Google Gemini 2.5 Pro
 - **Anonymous Message Sending** to any user
 - **Message Management** (view, delete messages)
 - **Message Acceptance Toggle** (enable/disable receiving messages)
 - **Real-time Message Updates**
+- **Smart Fallback System** when AI limits are exceeded
 
-### 🎨 **User Experience**
-- **Modern UI/UX** with Tailwind CSS and shadcn/ui
-- **Responsive Design** for all devices
+### 📊 **Analytics & Insights**
+- **Message Sentiment Analysis** (positive, negative, neutral)
+- **Emotion Detection** (joy, sadness, anger, surprise, fear, disgust)
+- **Topic Extraction** from message content
+- **Timing Analytics** (peak hours, days, weekly patterns)
+- **Sentiment Trends** over time
+- **Message Statistics** (length, question ratio, exclamation ratio)
+
+### 🎨 **Modern User Experience**
+- **Beautiful Gradient Design** with glassmorphism effects
+- **Responsive Design** optimized for all devices
+- **Smooth Animations** and transitions
 - **Toast Notifications** for user feedback
-- **Loading States** and error handling
+- **Loading States** with modern spinners
+- **Error Handling** with contextual messages
 - **Form Validation** with Zod schemas
+- **Accessibility Features** for inclusive design
 
-### 🤖 **AI Integration**
+### 🤖 **Advanced AI Integration**
 - **Smart Message Suggestions** that are engaging and conversation-worthy
 - **Diverse Question Themes**: personal reflection, hypothetical scenarios, creativity
 - **Context-Aware Prompts** for better message quality
-- **Fallback System** when AI limits are exceeded
+- **Intelligent Fallback System** with curated default messages
+- **Real-time AI Processing** with error handling
 
 ## 🚀 Tech Stack
 
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS, shadcn/ui components
+- **Frontend**: Next.js 14 (App Router), React 18, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui components, Lucide React icons
 - **Backend**: Next.js API Routes, MongoDB with Mongoose
 - **Authentication**: NextAuth.js with Credentials provider
-- **AI**: Google Generative AI (Gemini 1.5 Pro)
+- **AI**: Google Generative AI (Gemini 2.5 Pro)
 - **Email**: Nodemailer with Gmail SMTP
+- **Validation**: Zod schemas with React Hook Form
 - **Deployment**: Vercel
 - **Database**: MongoDB Atlas
 
@@ -116,6 +131,7 @@
 3. **Share**: Share your link with friends or on social media
 4. **Receive Messages**: Get anonymous messages from others
 5. **Manage**: View, delete, and control message acceptance
+6. **Analytics**: View insights about your messages
 
 ### For Senders
 1. **Visit Profile**: Go to any user's Ghost Note profile
@@ -128,29 +144,47 @@
 ```
 src/
 ├── app/                    # Next.js 14 app directory
-│   ├── (auth)/            # Authentication pages
-│   ├── (app)/             # Protected app pages
-│   ├── api/               # API routes
-│   └── globals.css        # Global styles
+│   ├── (auth)/            # Authentication pages (sign-in, sign-up, forgot-pass, verify)
+│   ├── (app)/             # Protected app pages (dashboard, analytics, user profiles)
+│   ├── api/               # API routes (auth, messages, analytics, AI suggestions)
+│   └── globals.css        # Global styles with custom background
 ├── components/            # Reusable UI components
 │   ├── ui/               # shadcn/ui components
-│   └── ...               # Custom components
-├── context/              # React context providers
-├── helpers/              # Utility functions
-├── lib/                  # Database and utility functions
-├── models/               # MongoDB schemas
+│   ├── User.tsx          # User profile component
+│   ├── Navbar.tsx        # Navigation component
+│   └── ...               # Status components (Not, NotFound, Verified, etc.)
+├── context/              # React context providers (AuthProvider)
+├── helpers/              # Email utility functions
+├── lib/                  # Database connection and utilities
+├── models/               # MongoDB schemas (User model)
 ├── schemas/              # Zod validation schemas
 └── types/                # TypeScript type definitions
 ```
+
+## 🎨 Design System
+
+### Color Palette
+- **Primary**: Stone gradient (stone-50 to stone-100)
+- **Text**: Stone-800 to stone-600 gradients
+- **Cards**: White with 70% opacity and backdrop blur
+- **Accents**: Consistent stone color variations
+
+### Components
+- **Glassmorphism Cards**: Modern translucent design
+- **Gradient Backgrounds**: Subtle stone gradients
+- **Responsive Grid**: Adaptive layouts for all devices
+- **Modern Icons**: Lucide React icon set
+- **Smooth Transitions**: CSS transitions and animations
 
 ## 🔒 Security Features
 
 - **Password Hashing**: bcrypt with salt rounds
 - **Email Verification**: OTP-based account verification
-- **Session Management**: Secure session handling
-- **Input Validation**: Zod schema validation
+- **Session Management**: Secure session handling with NextAuth.js
+- **Input Validation**: Zod schema validation on all forms
 - **Rate Limiting**: Built-in Next.js protection
 - **CORS Protection**: Configured for production
+- **Environment Variables**: Secure configuration management
 
 ## 🚀 Deployment
 
@@ -158,7 +192,7 @@ src/
 1. Push your code to GitHub
 2. Connect your repository to Vercel
 3. Add environment variables in Vercel dashboard
-4. Deploy automatically
+4. Deploy automatically with zero configuration
 
 ### Environment Variables for Production
 ```env
@@ -169,6 +203,15 @@ GHOST_NOTE_EMAIL=your_production_email
 GHOST_NOTE_PASS=your_production_email_password
 GOOGLE_GENERATIVE_AI_API_KEY=your_production_ai_key
 ```
+
+## 🧪 Testing
+
+The application is production-ready with:
+- **Type Safety**: Full TypeScript coverage
+- **Form Validation**: Comprehensive Zod schemas
+- **Error Handling**: Graceful error states
+- **Loading States**: User-friendly loading indicators
+- **Responsive Design**: Tested across devices
 
 ## 🤝 Contributing
 
@@ -189,13 +232,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Google Gemini** for AI-powered message suggestions
 - **MongoDB** for reliable database storage
 - **Vercel** for seamless deployment
+- **Tailwind CSS** for utility-first styling
+- **Lucide React** for beautiful icons
 
 ## 📞 Support
 
 - **Live Demo**: [ghost-note.vercel.app](https://ghost-note.vercel.app/)
-- **Issues**: [GitHub Issues](https://github.com/your-username/ghost-note/issues)
-- **Email**: [your-email@example.com](mailto:your-email@example.com)
+- **Issues**: [GitHub Issues](https://github.com/samdeepsharma/ghost-note/issues)
+- **Email**: [your-email@example.com](mailto:services.ghost.note@gmail.com)
 
 ---
 
 **Made with ❤️ for anonymous conversations**
+
+*Ghost Note - Where thoughts flow freely, identities stay hidden.*

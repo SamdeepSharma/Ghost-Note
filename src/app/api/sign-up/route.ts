@@ -91,7 +91,6 @@ export async function POST(request: Request){
                }
           )
      } catch (error) {
-          console.log("Error regestering user", error)
           return Response.json(
                {
                     success: false,

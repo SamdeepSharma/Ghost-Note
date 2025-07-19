@@ -1,9 +1,17 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY || "");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
 export async function POST(request: Request) {
+  // Check if API key is available
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
+  if (!apiKey) {
+    return Response.json(
+      { message: "API key not configured." }, { status: 500 }
+    );
+  }
 
   try {
     const prompt = `You are a creative message generator for an anonymous social messaging platform called "Ghost Note". Your task is to create 3 engaging, thought-provoking, and conversation-starting questions that users can send anonymously to others.
@@ -39,14 +47,18 @@ Return only the 3 questions separated by '||' with no additional text, quotes, o
 Generate fresh, creative questions that haven't been used before. Make them engaging enough that someone would want to respond to them.`;
 
     const result = await model.generateContent(prompt);
+    
     const response = result.response;
     const text = response.text();
+    
     const suggestions = text.trim().replace(/^"|"$/g, '');
+    
+    const suggestionArray = suggestions.split('||');
+    
     return Response.json(
       { suggestions }, { status: 200 }
     )
   } catch (error) {
-    console.log("Internal server error", error)
     return Response.json(
       { message: "Internal server error." }, { status: 500 }
     )
