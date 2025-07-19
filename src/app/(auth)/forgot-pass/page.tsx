@@ -174,19 +174,19 @@ const ForgotPasswordPage = () => {
      const renderOtpStep = () => (
           <Form {...otpForm}>
                <form onSubmit={otpForm.handleSubmit(onOtpSubmit)} className="space-y-6">
-                    <FormField
-                         name="email"
-                         control={otpForm.control}
-                         render={({ field }) => (
-                              <FormItem>
-                                   <FormLabel>Email</FormLabel>
-                                   <FormControl>
-                                        <Input type="email" value={email} disabled {...field} />
-                                   </FormControl>
-                                   <FormMessage />
-                              </FormItem>
-                         )}
-                    />
+                                         <FormField
+                          name="email"
+                          control={otpForm.control}
+                          render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                         <Input type="email" disabled {...field} value={email} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                          )}
+                     />
                     <FormField
                          name="otp"
                          control={otpForm.control}
@@ -225,32 +225,32 @@ const ForgotPasswordPage = () => {
      const renderPasswordStep = () => (
           <Form {...passwordForm}>
                <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-6">
-                    <FormField
-                         name="email"
-                         control={passwordForm.control}
-                         render={({ field }) => (
-                              <FormItem>
-                                   <FormLabel>Email</FormLabel>
-                                   <FormControl>
-                                        <Input type="email" value={email} disabled {...field} />
-                                   </FormControl>
-                                   <FormMessage />
-                              </FormItem>
-                         )}
-                    />
-                    <FormField
-                         name="otp"
-                         control={passwordForm.control}
-                         render={({ field }) => (
-                              <FormItem>
-                                   <FormLabel>OTP</FormLabel>
-                                   <FormControl>
-                                        <Input type="text" value={otp} disabled {...field} />
-                                   </FormControl>
-                                   <FormMessage />
-                              </FormItem>
-                         )}
-                    />
+                                         <FormField
+                          name="email"
+                          control={passwordForm.control}
+                          render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                         <Input type="email" disabled {...field} value={email} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                          )}
+                     />
+                                         <FormField
+                          name="otp"
+                          control={passwordForm.control}
+                          render={({ field }) => (
+                               <FormItem>
+                                    <FormLabel>OTP</FormLabel>
+                                    <FormControl>
+                                         <Input type="text" disabled {...field} value={otp} />
+                                    </FormControl>
+                                    <FormMessage />
+                               </FormItem>
+                          )}
+                     />
                     <FormField
                          name="newPassword"
                          control={passwordForm.control}

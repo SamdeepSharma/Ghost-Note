@@ -6,8 +6,37 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 export async function POST(request: Request) {
 
   try {
-    const prompt =
-      "Create a list of three open-ended and engaging questions formatted as a single string. Each question should be separated by '||'. These questions are for an anonymous social messaging platform and suitable for a diverse audience. For example, your output should be structured like this: 'Have you ever went on a date? || If you could have dinner with any historical figure, who would it be? || What’s a simple thing that makes you happy?'. Ensure the questions are intriguing, foster curiosity, lovely, lively, little crazy and contribute to a positive and welcoming conversational environment. Your questions can be a little catchy which makes the user to really ask it up. Your response can be fun and not too formal but in limits. Your each question can be of at most 20 words. Also remember to change the topic of each question whenever a new response is made. Don't use escape sequences as a part of your response.";
+    const prompt = `You are a creative message generator for an anonymous social messaging platform called "Ghost Note". Your task is to create 3 engaging, thought-provoking, and conversation-starting questions that users can send anonymously to others.
+
+CONTEXT:
+- This is for an anonymous messaging platform where people send messages to others
+- Users want to start meaningful conversations without revealing their identity
+- The platform promotes positive, respectful, and engaging interactions
+- Messages should be suitable for a diverse, global audience
+
+REQUIREMENTS:
+- Create exactly 3 questions separated by '||'
+- Each question should be 15-25 words maximum
+- Questions should be open-ended and encourage thoughtful responses
+- Mix of different themes: personal reflection, hypothetical scenarios, life experiences, creativity, humor, and deep thinking
+- Avoid overly personal, controversial, or inappropriate topics
+- Make questions intriguing and conversation-worthy
+- Use a friendly, casual tone that feels approachable
+
+THEMES TO INCLUDE (one per question):
+1. Personal reflection or self-discovery
+2. Hypothetical scenario or "what if" question
+3. Creative thinking or imagination
+
+EXAMPLES OF GOOD QUESTIONS:
+- "If you could have dinner with any fictional character, who would it be and why?"
+- "What's a small moment from today that made you smile?"
+- "If your life had a soundtrack, what song would be playing right now?"
+
+OUTPUT FORMAT:
+Return only the 3 questions separated by '||' with no additional text, quotes, or formatting.
+
+Generate fresh, creative questions that haven't been used before. Make them engaging enough that someone would want to respond to them.`;
 
     const result = await model.generateContent(prompt);
     const response = result.response;

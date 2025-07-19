@@ -51,7 +51,7 @@ export default function Home() {
       </main>
 
       <footer className="bg-stone-900 bg-opacity-90 flex flex-col md:flex-row items-center justify-between shadow rounded-t-md py-4 px-6 md:py-6 md:px-8 xl:py-8 xl:px-14 text-center">
-        <div className="mt-2 text-xs md:text-sm mb-3 md:mb-0 text-gray-500"><p>Copyright © 2024 | Ghost-Note | All rights reserved.</p></div>
+        <div className="mt-2 text-xs md:text-sm mb-3 md:mb-0 text-gray-500"><p>Copyright © 2025 | Ghost-Note | All rights reserved.</p></div>
         <div className="flex sm:justify-center space-x-6">
           <a href="https://www.instagram.com/samdeep_.s/" target="_blank" className="text-gray-500 hover:text-neutral-300">
             <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
