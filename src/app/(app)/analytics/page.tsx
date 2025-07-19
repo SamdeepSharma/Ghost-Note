@@ -124,21 +124,13 @@ const AnalyticsPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-stone-100 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-stone-800 to-stone-600 bg-clip-text text-transparent mb-2">
-                Message Analytics
-              </h1>
-              <p className="text-stone-600">
-                Insights about your anonymous messages
-              </p>
-            </div>
-            <Link href="/dashboard">
-              <Button variant="outline" className="flex items-center gap-2 border-stone-300 text-stone-700 hover:bg-stone-50">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Dashboard
-              </Button>
-            </Link>
+          <div className="mb-4">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-stone-800 to-stone-600 bg-clip-text text-transparent mb-2">
+              Message Analytics
+            </h1>
+            <p className="text-stone-600">
+              Insights about your anonymous messages
+            </p>
           </div>
         </div>
 
