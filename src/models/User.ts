@@ -26,6 +26,9 @@ export interface User extends Document {
      isVerified: boolean;
      isAcceptingMessages: boolean;
      messages: Message[];
+     lastLogin?: Date;
+     otpCode?: string;
+     otpExpiry?: Date;
      createdAt: Date
 }
 
@@ -64,11 +67,25 @@ const UserSchema: Schema<User> = new Schema({
           default: true
      },
      messages: [MessageSchema],
+     lastLogin: {
+          type: Date,
+          default: null
+     },
+     otpCode: {
+          type: String,
+          default: null
+     },
+     otpExpiry: {
+          type: Date,
+          default: null
+     },
      createdAt: {
           required: true,
           type: Date,
           default: Date.now
      },
+}, {
+     strict: false // Allow fields not in schema
 })
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>('User', UserSchema)

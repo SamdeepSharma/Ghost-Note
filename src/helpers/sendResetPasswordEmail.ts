@@ -4,7 +4,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 export async function sendResetPasswordEmail(
      email: string,
      username: string,
-     password: string
+     otp: string
 ): Promise<ApiResponse> {
 
      const transporter = nodemailer.createTransport({
@@ -18,15 +18,25 @@ export async function sendResetPasswordEmail(
      const mailOptions = {
           from: process.env.GHOST_NOTE_EMAIL,
           to: email,
-          subject: 'Ghost-Note | Reset Password',
+          subject: 'Ghost-Note | Password Reset OTP',
           html: `
          <html lang="en" dir="ltr">
            <head>
-             <title>New Password</title>
+             <title>Password Reset OTP</title>
              <style>
                @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
                body {
                  font-family: 'Roboto', Verdana, sans-serif;
+               }
+               .otp {
+                 font-size: 24px;
+                 font-weight: bold;
+                 color: #007bff;
+                 padding: 10px;
+                 background-color: #f8f9fa;
+                 border-radius: 5px;
+                 text-align: center;
+                 margin: 20px 0;
                }
                .button {
                  color: #FFFFFF;
@@ -43,13 +53,12 @@ export async function sendResetPasswordEmail(
            <body>
              <div>
                <h2>Hello ${username},</h2>
-               <p>Please use the following new password for signing in:</p>
-               <p><b>${password}</b></p>
-               <p>We advice you to change your password after logging in to your account.</p>
-               <br/>
-               <a href="https://ghost-note.vercel.app/sign-in" class="button">Sign In</a>
+               <p>You have requested to reset your password. Please use the following OTP to proceed:</p>
+               <div class="otp">${otp}</div>
+               <p>This OTP will expire in 10 minutes.</p>
+               <p>If you didn't request this password reset, please ignore this email.</p>
                <hr/>
-               <p>Do not share this password with anyone else, its highly confidential.</p>
+               <p>Do not share this OTP with anyone else, it's highly confidential.</p>
                <p>Thanks for using our services</p>
                <p>Regards,</p>
                <p><b>Ghost Note</b></p>
@@ -60,12 +69,35 @@ export async function sendResetPasswordEmail(
      };
 
      try {
+          console.log('Email configuration:', {
+               service: 'gmail',
+               user: process.env.GHOST_NOTE_EMAIL,
+               hasPassword: !!process.env.GHOST_NOTE_PASS
+          })
+          
           const res = await transporter.sendMail(mailOptions);
-          console.log('Email sent: ' + res.response);
-          return { success: true, message: "Reset Password email sent successfully." }
+          console.log('Email sent successfully: ' + res.response);
+          return { success: true, message: "Reset Password OTP sent successfully." }
 
-     } catch (emailError) {
-          console.error("Error sending verification email", emailError)
-          return { success: false, message: "Failed to send reset password email." }
+     } catch (emailError: any) {
+          console.error("Error sending reset password email:", emailError)
+          console.error("Error details:", {
+               code: emailError.code,
+               command: emailError.command,
+               response: emailError.response,
+               responseCode: emailError.responseCode
+          })
+          
+          let errorMessage = "Failed to send reset password email."
+          
+          if (emailError.code === 'EAUTH') {
+               errorMessage = "Email authentication failed. Please check email credentials."
+          } else if (emailError.code === 'ECONNECTION') {
+               errorMessage = "Email connection failed. Please check internet connection."
+          } else if (emailError.responseCode === 535) {
+               errorMessage = "Email authentication failed. Please check app password."
+          }
+          
+          return { success: false, message: errorMessage }
      }
 }
