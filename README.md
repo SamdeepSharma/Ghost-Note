@@ -53,7 +53,7 @@
 - **Styling**: Tailwind CSS, shadcn/ui components, Lucide React icons
 - **Backend**: Next.js API Routes, MongoDB with Mongoose
 - **Authentication**: NextAuth.js with Credentials provider
-- **AI**: Google Generative AI (Gemini 2.5 Pro)
+- **AI**: Google Generative AI (Gemini 2.5 Flash)
 - **Email**: Nodemailer with Gmail SMTP
 - **Validation**: Zod schemas with React Hook Form
 - **Deployment**: Vercel
